@@ -1,15 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const Card = styled(Link)`
-  background: white;
+  background: ${({ theme }) => theme.colors.cardBackground};
   border-radius: ${({ theme }) => theme.borderRadius.medium};
   padding: ${({ theme }) => theme.spacing.lg};
   box-shadow: ${({ theme }) => theme.shadows.small};
   transition: ${({ theme }) => theme.transitions.medium};
   text-decoration: none;
-  color: inherit;
+  color: ${({ theme }) => theme.colors.textPrimary};
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.md};
@@ -22,7 +23,7 @@ const Card = styled(Link)`
 
 const Title = styled.h3`
   margin: 0;
-  color: ${({ theme }) => theme.colors.dark};
+  color: ${({ theme }) => theme.colors.textPrimary};
   font-size: ${({ theme }) => theme.fontSizes.xl};
   font-family: ${({ theme }) => theme.fonts.primary};
 `;
@@ -42,7 +43,7 @@ const MetaData = styled.div`
 `;
 
 const Category = styled.span`
-  background: ${({ theme }) => theme.colors.light};
+  background: ${({ theme }) => theme.colors.backgroundAlt};
   color: ${({ theme }) => theme.colors.textSecondary};
   padding: ${({ theme }) => theme.spacing.xs} ${({ theme }) => theme.spacing.sm};
   border-radius: ${({ theme }) => theme.borderRadius.small};
@@ -102,6 +103,18 @@ const MarketCard = ({ market }) => {
       </MetaData>
     </Card>
   );
+};
+
+MarketCard.propTypes = {
+  market: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    category: PropTypes.string.isRequired,
+    volume: PropTypes.string.isRequired,
+    yesPrice: PropTypes.number.isRequired,
+    noPrice: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 export default MarketCard;

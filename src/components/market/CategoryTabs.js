@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -20,7 +21,7 @@ const Tab = styled.button`
   padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
   border: none;
   background: ${({ active, theme }) => (active ? theme.colors.primary : 'transparent')};
-  color: ${({ active }) => (active ? 'white' : 'inherit')};
+  color: ${({ active, theme }) => (active ? 'white' : theme.colors.textPrimary)};
   border-radius: ${({ theme }) => theme.borderRadius.medium};
   cursor: pointer;
   white-space: nowrap;
@@ -31,7 +32,8 @@ const Tab = styled.button`
   gap: ${({ theme }) => theme.spacing.sm};
 
   &:hover {
-    background: ${({ active, theme }) => (active ? theme.colors.primary : theme.colors.light)};
+    background: ${({ active, theme }) =>
+      active ? theme.colors.primary : theme.colors.backgroundAlt};
   }
 `;
 
@@ -52,6 +54,18 @@ const CategoryTabs = ({ categories, activeCategory, onCategoryChange }) => {
       ))}
     </Container>
   );
+};
+
+CategoryTabs.propTypes = {
+  categories: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      icon: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  activeCategory: PropTypes.string.isRequired,
+  onCategoryChange: PropTypes.func.isRequired,
 };
 
 export default CategoryTabs;
