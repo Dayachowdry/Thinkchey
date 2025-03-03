@@ -1,21 +1,44 @@
-export const theme = {
-  colors: {
-    primary: '#3772FF',
-    secondary: '#45B26B',
-    accent: '#EF466F',
-    success: '#45B26B',
-    successLight: '#45B26B20',
-    danger: '#EF466F',
-    dangerLight: '#EF466F20',
-    warning: '#FFB800',
-    info: '#3772FF',
-    dark: '#141416',
-    light: '#F4F5F6',
-    background: '#FCFCFD',
-    border: '#E6E8EC',
-    textPrimary: '#141416',
-    textSecondary: '#777E90',
-  },
+const lightColors = {
+  primary: '#3772FF',
+  secondary: '#45B26B',
+  accent: '#EF466F',
+  success: '#45B26B',
+  successLight: '#45B26B20',
+  danger: '#EF466F',
+  dangerLight: '#EF466F20',
+  warning: '#FFB800',
+  info: '#3772FF',
+  dark: '#141416',
+  light: '#F4F5F6',
+  background: '#FCFCFD',
+  backgroundAlt: '#F4F5F6',
+  border: '#E6E8EC',
+  textPrimary: '#141416',
+  textSecondary: '#777E90',
+  cardBackground: '#FFFFFF',
+};
+
+const darkColors = {
+  primary: '#3772FF',
+  secondary: '#45B26B',
+  accent: '#EF466F',
+  success: '#45B26B',
+  successLight: '#45B26B20',
+  danger: '#EF466F',
+  dangerLight: '#EF466F20',
+  warning: '#FFB800',
+  info: '#3772FF',
+  dark: '#FCFCFD',
+  light: '#141416',
+  background: '#141416',
+  backgroundAlt: '#1E1E1E',
+  border: '#2D2D2D',
+  textPrimary: '#FCFCFD',
+  textSecondary: '#B7B9BD',
+  cardBackground: '#1E1E1E',
+};
+
+const baseTheme = {
   spacing: {
     xs: '4px',
     sm: '8px',
@@ -63,3 +86,8 @@ export const theme = {
     desktop: '1280px',
   },
 };
+
+export const getTheme = (isDarkMode) => ({
+  ...baseTheme,
+  colors: isDarkMode ? darkColors : lightColors,
+});

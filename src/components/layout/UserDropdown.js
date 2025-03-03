@@ -16,12 +16,14 @@ const UserButton = styled.button`
   padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.medium};
-  background: white;
+  background: ${({ theme }) => theme.colors.cardBackground};
+  color: ${({ theme }) => theme.colors.textPrimary};
   cursor: pointer;
-  transition: ${({ theme }) => theme.transitions.medium};
+  transition: all ${({ theme }) => theme.transitions.medium};
 
   &:hover {
-    background: ${({ theme }) => theme.colors.light};
+    background: ${({ theme }) => theme.colors.backgroundAlt};
+    border-color: ${({ theme }) => theme.colors.primary};
   }
 `;
 
@@ -44,12 +46,14 @@ const UserInfo = styled.div`
 
 const UserName = styled.div`
   font-weight: 500;
-  color: ${({ theme }) => theme.colors.dark};
+  color: ${({ theme }) => theme.colors.textPrimary};
+  transition: color ${({ theme }) => theme.transitions.medium};
 `;
 
 const Balance = styled.div`
   font-size: ${({ theme }) => theme.fontSizes.sm};
   color: ${({ theme }) => theme.colors.textSecondary};
+  transition: color ${({ theme }) => theme.transitions.medium};
 `;
 
 const DropdownMenu = styled.div`
@@ -57,13 +61,15 @@ const DropdownMenu = styled.div`
   top: 100%;
   right: 0;
   margin-top: ${({ theme }) => theme.spacing.sm};
-  background: white;
+  background: ${({ theme }) => theme.colors.cardBackground};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.medium};
   box-shadow: ${({ theme }) => theme.shadows.medium};
   min-width: 200px;
   z-index: 1000;
   display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
+  transition: background-color ${({ theme }) => theme.transitions.medium},
+              border-color ${({ theme }) => theme.transitions.medium};
 `;
 
 const MenuItem = styled(Link)`
@@ -71,12 +77,13 @@ const MenuItem = styled(Link)`
   align-items: center;
   gap: ${({ theme }) => theme.spacing.sm};
   padding: ${({ theme }) => theme.spacing.md};
-  color: ${({ theme }) => theme.colors.dark};
+  color: ${({ theme }) => theme.colors.textPrimary};
   text-decoration: none;
-  transition: ${({ theme }) => theme.transitions.medium};
+  transition: all ${({ theme }) => theme.transitions.medium};
 
   &:hover {
-    background: ${({ theme }) => theme.colors.light};
+    background: ${({ theme }) => theme.colors.backgroundAlt};
+    color: ${({ theme }) => theme.colors.primary};
   }
 
   &:not(:last-child) {
@@ -95,10 +102,11 @@ const LogoutButton = styled.button`
   border: none;
   background: none;
   cursor: pointer;
-  transition: ${({ theme }) => theme.transitions.medium};
+  transition: all ${({ theme }) => theme.transitions.medium};
 
   &:hover {
-    background: ${({ theme }) => theme.colors.light};
+    background: ${({ theme }) => theme.colors.backgroundAlt};
+    color: ${({ theme }) => theme.colors.danger};
   }
 `;
 
@@ -108,7 +116,7 @@ const UserDropdown = () => {
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = event => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
       }
@@ -122,7 +130,7 @@ const UserDropdown = () => {
     return <LoginButton />;
   }
 
-  const getInitials = (name) => {
+  const getInitials = name => {
     return name
       .split(' ')
       .map(word => word[0])

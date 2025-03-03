@@ -36,7 +36,7 @@ const SearchInput = ({ value, onChange }) => {
         type="text"
         placeholder="Search by market..."
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={e => onChange(e.target.value)}
       />
     </Container>
   );

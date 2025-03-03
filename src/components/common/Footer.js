@@ -86,39 +86,69 @@ const Footer = () => {
           <h3>Thinkchey</h3>
           <p>The premier prediction market platform for betting on the outcome of events.</p>
           <SocialLinks>
-            <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer">T</a>
-            <a href="https://discord.com/" target="_blank" rel="noopener noreferrer">D</a>
-            <a href="https://github.com/" target="_blank" rel="noopener noreferrer">G</a>
+            <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer">
+              T
+            </a>
+            <a href="https://discord.com/" target="_blank" rel="noopener noreferrer">
+              D
+            </a>
+            <a href="https://github.com/" target="_blank" rel="noopener noreferrer">
+              G
+            </a>
           </SocialLinks>
         </FooterSection>
 
         <FooterSection>
           <h3>Markets</h3>
           <ul>
-            <li><Link to="/explore?category=politics">Politics</Link></li>
-            <li><Link to="/explore?category=crypto">Crypto</Link></li>
-            <li><Link to="/explore?category=sports">Sports</Link></li>
-            <li><Link to="/explore?category=entertainment">Entertainment</Link></li>
-            <li><Link to="/explore?category=science">Science & Tech</Link></li>
+            <li>
+              <Link to="/explore?category=politics">Politics</Link>
+            </li>
+            <li>
+              <Link to="/explore?category=crypto">Crypto</Link>
+            </li>
+            <li>
+              <Link to="/explore?category=sports">Sports</Link>
+            </li>
+            <li>
+              <Link to="/explore?category=entertainment">Entertainment</Link>
+            </li>
+            <li>
+              <Link to="/explore?category=science">Science & Tech</Link>
+            </li>
           </ul>
         </FooterSection>
 
         <FooterSection>
           <h3>Resources</h3>
           <ul>
-            <li><Link to="/about">About Us</Link></li>
-            <li><Link to="/faq">FAQ</Link></li>
-            <li><Link to="/blog">Blog</Link></li>
-            <li><Link to="/docs">Documentation</Link></li>
+            <li>
+              <Link to="/about">About Us</Link>
+            </li>
+            <li>
+              <Link to="/faq">FAQ</Link>
+            </li>
+            <li>
+              <Link to="/blog">Blog</Link>
+            </li>
+            <li>
+              <Link to="/docs">Documentation</Link>
+            </li>
           </ul>
         </FooterSection>
 
         <FooterSection>
           <h3>Legal</h3>
           <ul>
-            <li><Link to="/terms">Terms of Service</Link></li>
-            <li><Link to="/privacy">Privacy Policy</Link></li>
-            <li><Link to="/disclaimer">Risk Disclaimer</Link></li>
+            <li>
+              <Link to="/terms">Terms of Service</Link>
+            </li>
+            <li>
+              <Link to="/privacy">Privacy Policy</Link>
+            </li>
+            <li>
+              <Link to="/disclaimer">Risk Disclaimer</Link>
+            </li>
           </ul>
         </FooterSection>
       </FooterContainer>

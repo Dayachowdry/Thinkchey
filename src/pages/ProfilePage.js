@@ -15,7 +15,7 @@ const ProfileHeader = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 2rem;
-  
+
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     flex-direction: column;
     align-items: flex-start;
@@ -33,7 +33,7 @@ const ProfileAvatar = styled.div`
   justify-content: center;
   font-size: 3rem;
   margin-right: 2rem;
-  
+
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     margin-right: 0;
     margin-bottom: 1rem;
@@ -49,19 +49,19 @@ const ProfileAddress = styled.div`
   align-items: center;
   margin-bottom: 0.5rem;
   font-size: 1.1rem;
-  
+
   span {
     margin-right: 0.5rem;
     font-weight: 500;
   }
-  
+
   button {
     background: transparent;
     border: none;
     color: ${({ theme }) => theme.colors.primary};
     cursor: pointer;
     font-size: 0.9rem;
-    
+
     &:hover {
       text-decoration: underline;
     }
@@ -72,7 +72,7 @@ const ProfileStats = styled.div`
   display: flex;
   gap: 2rem;
   margin-top: 1rem;
-  
+
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     flex-wrap: wrap;
     gap: 1rem;
@@ -85,7 +85,7 @@ const StatItem = styled.div`
     font-size: 0.9rem;
     color: ${({ theme }) => theme.colors.textSecondary};
   }
-  
+
   span:last-child {
     font-size: 1.25rem;
     font-weight: 600;
@@ -102,12 +102,12 @@ const TabButton = styled.button`
   margin-right: 1rem;
   background: transparent;
   border: none;
-  color: ${({ active, theme }) => active ? theme.colors.primary : theme.colors.textSecondary};
-  font-weight: ${({ active }) => active ? '600' : '400'};
-  border-bottom: 2px solid ${({ active, theme }) => active ? theme.colors.primary : 'transparent'};
+  color: ${({ active, theme }) => (active ? theme.colors.primary : theme.colors.textSecondary)};
+  font-weight: ${({ active }) => (active ? '600' : '400')};
+  border-bottom: 2px solid ${({ active, theme }) => (active ? theme.colors.primary : 'transparent')};
   cursor: pointer;
   transition: ${({ theme }) => theme.transitions.fast};
-  
+
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
   }
@@ -140,7 +140,7 @@ const ActionButton = styled(Link)`
   border-radius: ${({ theme }) => theme.borderRadius.medium};
   font-weight: 500;
   transition: ${({ theme }) => theme.transitions.medium};
-  
+
   &:hover {
     background: ${({ theme }) => theme.colors.secondary};
   }
@@ -150,18 +150,19 @@ const TransactionsTable = styled.table`
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 2rem;
-  
-  th, td {
+
+  th,
+  td {
     padding: 1rem;
     text-align: left;
     border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   }
-  
+
   th {
     font-weight: 500;
     color: ${({ theme }) => theme.colors.textSecondary};
   }
-  
+
   tr:hover {
     background: ${({ theme }) => theme.colors.backgroundAlt};
   }
@@ -203,17 +204,18 @@ const PaginationContainer = styled.div`
 const PaginationButton = styled.button`
   padding: 0.5rem 1rem;
   margin: 0 0.25rem;
-  background: ${({ active, theme }) => active ? theme.colors.primary : 'transparent'};
-  color: ${({ active, theme }) => active ? 'white' : theme.colors.textSecondary};
-  border: 1px solid ${({ active, theme }) => active ? theme.colors.primary : theme.colors.border};
+  background: ${({ active, theme }) => (active ? theme.colors.primary : 'transparent')};
+  color: ${({ active, theme }) => (active ? 'white' : theme.colors.textSecondary)};
+  border: 1px solid ${({ active, theme }) => (active ? theme.colors.primary : theme.colors.border)};
   border-radius: ${({ theme }) => theme.borderRadius.small};
   cursor: pointer;
   transition: ${({ theme }) => theme.transitions.fast};
-  
+
   &:hover {
-    background: ${({ active, theme }) => active ? theme.colors.primary : theme.colors.backgroundAlt};
+    background: ${({ active, theme }) =>
+      active ? theme.colors.primary : theme.colors.backgroundAlt};
   }
-  
+
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -227,7 +229,7 @@ const mockUser = {
   balance: 1250.75,
   marketsCreated: 0,
   activeTrades: 3,
-  totalProfit: 325.50,
+  totalProfit: 325.5,
 };
 
 const mockPositions = [
@@ -249,7 +251,7 @@ const mockPositions = [
     marketId: 2,
     outcome: 'Democrat',
     shares: 50,
-    avgPrice: 0.50,
+    avgPrice: 0.5,
     currentPrice: 0.52,
     profit: 1,
     status: 'profit',
@@ -261,7 +263,7 @@ const mockPositions = [
     marketId: 3,
     outcome: 'No',
     shares: 75,
-    avgPrice: 0.70,
+    avgPrice: 0.7,
     currentPrice: 0.69,
     profit: -0.75,
     status: 'loss',
@@ -288,7 +290,7 @@ const mockTransactions = [
     marketId: 2,
     outcome: 'Democrat',
     shares: 50,
-    price: 0.50,
+    price: 0.5,
     total: 25,
     date: '2023-07-22',
   },
@@ -299,7 +301,7 @@ const mockTransactions = [
     marketId: 3,
     outcome: 'No',
     shares: 75,
-    price: 0.70,
+    price: 0.7,
     total: 52.5,
     date: '2023-08-01',
   },
@@ -321,18 +323,18 @@ const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState('positions');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-  
+
   // Simulate data loading
   const user = mockUser;
   const positions = mockPositions;
   const transactions = mockTransactions;
-  
+
   // Mock function to copy address to clipboard
   const copyAddressToClipboard = () => {
     navigator.clipboard.writeText(user.address);
     alert('Address copied to clipboard!');
   };
-  
+
   const renderTabContent = () => {
     switch (activeTab) {
       case 'positions':
@@ -345,7 +347,7 @@ const ProfilePage = () => {
         return null;
     }
   };
-  
+
   const renderPositions = () => {
     if (positions.length === 0) {
       return (
@@ -358,7 +360,7 @@ const ProfilePage = () => {
         </EmptyStateCard>
       );
     }
-    
+
     return (
       <TransactionsTable>
         <thead>
@@ -373,7 +375,7 @@ const ProfilePage = () => {
           </tr>
         </thead>
         <tbody>
-          {positions.map((position) => (
+          {positions.map(position => (
             <tr key={position.id}>
               <td>
                 <Link to={`/market/${position.marketId}`}>{position.market}</Link>
@@ -394,7 +396,7 @@ const ProfilePage = () => {
       </TransactionsTable>
     );
   };
-  
+
   const renderMarkets = () => {
     return (
       <EmptyStateCard>
@@ -406,26 +408,24 @@ const ProfilePage = () => {
       </EmptyStateCard>
     );
   };
-  
+
   const renderTransactions = () => {
     if (transactions.length === 0) {
       return (
         <EmptyStateCard>
           <EmptyStateTitle>No Transactions Yet</EmptyStateTitle>
-          <EmptyStateDescription>
-            You haven't made any transactions yet.
-          </EmptyStateDescription>
+          <EmptyStateDescription>You haven't made any transactions yet.</EmptyStateDescription>
           <ActionButton to="/explore">Explore Markets</ActionButton>
         </EmptyStateCard>
       );
     }
-    
+
     // Pagination
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = transactions.slice(indexOfFirstItem, indexOfLastItem);
     const totalPages = Math.ceil(transactions.length / itemsPerPage);
-    
+
     return (
       <>
         <TransactionsTable>
@@ -438,7 +438,7 @@ const ProfilePage = () => {
             </tr>
           </thead>
           <tbody>
-            {currentItems.map((transaction) => (
+            {currentItems.map(transaction => (
               <tr key={transaction.id}>
                 <td>{transaction.type}</td>
                 <td>
@@ -452,20 +452,18 @@ const ProfilePage = () => {
                   )}
                 </td>
                 <td>
-                  {transaction.type === 'Deposit' ? (
-                    `+$${transaction.amount.toFixed(2)}`
-                  ) : transaction.type === 'Withdrawal' ? (
-                    `-$${transaction.amount.toFixed(2)}`
-                  ) : (
-                    `$${transaction.total.toFixed(2)}`
-                  )}
+                  {transaction.type === 'Deposit'
+                    ? `+$${transaction.amount.toFixed(2)}`
+                    : transaction.type === 'Withdrawal'
+                      ? `-$${transaction.amount.toFixed(2)}`
+                      : `$${transaction.total.toFixed(2)}`}
                 </td>
                 <td>{new Date(transaction.date).toLocaleDateString()}</td>
               </tr>
             ))}
           </tbody>
         </TransactionsTable>
-        
+
         {totalPages > 1 && (
           <PaginationContainer>
             <PaginationButton
@@ -474,7 +472,7 @@ const ProfilePage = () => {
             >
               Previous
             </PaginationButton>
-            
+
             {Array.from({ length: totalPages }, (_, index) => (
               <PaginationButton
                 key={index}
@@ -484,7 +482,7 @@ const ProfilePage = () => {
                 {index + 1}
               </PaginationButton>
             ))}
-            
+
             <PaginationButton
               onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
               disabled={currentPage === totalPages}
@@ -496,7 +494,7 @@ const ProfilePage = () => {
       </>
     );
   };
-  
+
   return (
     <ProfileContainer>
       <ProfileHeader>
@@ -507,7 +505,7 @@ const ProfilePage = () => {
             <button onClick={copyAddressToClipboard}>Copy</button>
           </ProfileAddress>
           <div>Member since {new Date(user.joinedDate).toLocaleDateString()}</div>
-          
+
           <ProfileStats>
             <StatItem>
               <span>Balance</span>
@@ -530,18 +528,12 @@ const ProfilePage = () => {
           </ProfileStats>
         </ProfileInfo>
       </ProfileHeader>
-      
+
       <TabsContainer>
-        <TabButton
-          active={activeTab === 'positions'}
-          onClick={() => setActiveTab('positions')}
-        >
+        <TabButton active={activeTab === 'positions'} onClick={() => setActiveTab('positions')}>
           Positions
         </TabButton>
-        <TabButton
-          active={activeTab === 'markets'}
-          onClick={() => setActiveTab('markets')}
-        >
+        <TabButton active={activeTab === 'markets'} onClick={() => setActiveTab('markets')}>
           My Markets
         </TabButton>
         <TabButton
@@ -551,7 +543,7 @@ const ProfilePage = () => {
           Transactions
         </TabButton>
       </TabsContainer>
-      
+
       {renderTabContent()}
     </ProfileContainer>
   );

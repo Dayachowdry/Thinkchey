@@ -13,13 +13,13 @@ const Container = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing.xl};
 `;
 
-const FilterBar = ({ 
-  sortBy, 
-  onSortChange, 
-  searchTerm, 
+const FilterBar = ({
+  sortBy,
+  onSortChange,
+  searchTerm,
   onSearchChange,
   viewMode,
-  onViewModeChange 
+  onViewModeChange,
 }) => {
   return (
     <Container>

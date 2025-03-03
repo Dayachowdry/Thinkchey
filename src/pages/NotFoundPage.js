@@ -46,7 +46,7 @@ const GoHomeButton = styled(Link)`
   border-radius: ${({ theme }) => theme.borderRadius.medium};
   font-weight: 500;
   transition: ${({ theme }) => theme.transitions.medium};
-  
+
   &:hover {
     transform: translateY(-2px);
     background: ${({ theme }) => theme.colors.secondary};
@@ -60,7 +60,8 @@ const NotFoundPage = () => {
       <NotFoundTitle>404</NotFoundTitle>
       <NotFoundSubtitle>Page Not Found</NotFoundSubtitle>
       <NotFoundDescription>
-        The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
+        The page you are looking for might have been removed, had its name changed, or is
+        temporarily unavailable.
       </NotFoundDescription>
       <GoHomeButton to="/">Back to Home</GoHomeButton>
     </NotFoundContainer>

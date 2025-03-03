@@ -12,30 +12,24 @@ const Container = styled.div`
 const Button = styled.button`
   padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
   border: none;
-  background: ${({ active, theme }) => active ? 'white' : 'transparent'};
+  background: ${({ active, theme }) => (active ? 'white' : 'transparent')};
   border-radius: ${({ theme }) => theme.borderRadius.small};
   cursor: pointer;
   transition: ${({ theme }) => theme.transitions.medium};
-  box-shadow: ${({ active, theme }) => active ? theme.shadows.small : 'none'};
+  box-shadow: ${({ active, theme }) => (active ? theme.shadows.small : 'none')};
 
   &:hover {
-    background: ${({ active, theme }) => active ? 'white' : theme.colors.border};
+    background: ${({ active, theme }) => (active ? 'white' : theme.colors.border)};
   }
 `;
 
 const ViewToggle = ({ value, onChange }) => {
   return (
     <Container>
-      <Button
-        active={value === 'grid'}
-        onClick={() => onChange('grid')}
-      >
+      <Button active={value === 'grid'} onClick={() => onChange('grid')}>
         📱
       </Button>
-      <Button
-        active={value === 'list'}
-        onClick={() => onChange('list')}
-      >
+      <Button active={value === 'list'} onClick={() => onChange('list')}>
         📄
       </Button>
     </Container>

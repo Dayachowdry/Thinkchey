@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 import UserDropdown from './UserDropdown';
+import DarkModeToggle from '../common/DarkModeToggle';
 
 const Nav = styled.nav`
   position: fixed;
@@ -9,9 +10,10 @@ const Nav = styled.nav`
   left: 0;
   right: 0;
   height: 64px;
-  background: white;
+  background: ${({ theme }) => theme.colors.cardBackground};
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   z-index: 1000;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 `;
 
 const NavContent = styled.div`
@@ -32,6 +34,7 @@ const Logo = styled(Link)`
   color: ${({ theme }) => theme.colors.primary};
   font-weight: 600;
   font-size: ${({ theme }) => theme.fontSizes.lg};
+  transition: color 0.3s ease;
 `;
 
 const LogoIcon = styled.span`
@@ -46,15 +49,15 @@ const NavLinks = styled.div`
 
 const NavLink = styled(Link)`
   text-decoration: none;
-  color: ${({ active, theme }) => active ? theme.colors.primary : theme.colors.textSecondary};
-  font-weight: ${({ active }) => active ? '600' : '400'};
+  color: ${({ active, theme }) => (active ? theme.colors.primary : theme.colors.textSecondary)};
+  font-weight: ${({ active }) => (active ? '600' : '400')};
   padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
   border-radius: ${({ theme }) => theme.borderRadius.medium};
-  transition: ${({ theme }) => theme.transitions.medium};
+  transition: all ${({ theme }) => theme.transitions.medium};
 
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
-    background: ${({ theme }) => theme.colors.light};
+    background: ${({ theme }) => theme.colors.backgroundAlt};
   }
 `;
 
@@ -66,7 +69,7 @@ const RightSection = styled.div`
 
 const Navbar = () => {
   const location = useLocation();
-  const isActive = (path) => location.pathname === path;
+  const isActive = path => location.pathname === path;
 
   return (
     <Nav>
@@ -89,6 +92,7 @@ const Navbar = () => {
         </NavLinks>
 
         <RightSection>
+          <DarkModeToggle />
           <UserDropdown />
         </RightSection>
       </NavContent>

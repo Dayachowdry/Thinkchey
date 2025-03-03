@@ -67,7 +67,9 @@ const AccountPage = () => {
 
   const handleDeleteAccount = () => {
     // Implement account deletion logic
-    if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+    if (
+      window.confirm('Are you sure you want to delete your account? This action cannot be undone.')
+    ) {
       // Add deletion logic here
     }
   };
@@ -99,9 +101,7 @@ const AccountPage = () => {
 
         <DangerZone>
           <SectionTitle>Danger Zone</SectionTitle>
-          <DeleteButton onClick={handleDeleteAccount}>
-            Delete Account
-          </DeleteButton>
+          <DeleteButton onClick={handleDeleteAccount}>Delete Account</DeleteButton>
         </DangerZone>
       </Container>
     </Layout>

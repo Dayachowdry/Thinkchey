@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
     const checkAuth = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/auth/user`, {
-          withCredentials: true
+          withCredentials: true,
         });
         if (response.data.user) {
           setUser(response.data.user);
@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = useGoogleLogin({
-    onSuccess: async (response) => {
+    onSuccess: async response => {
       try {
         // Send access token to backend
         const result = await axios.post(
@@ -41,13 +41,13 @@ export const AuthProvider = ({ children }) => {
           },
           { withCredentials: true }
         );
-        
+
         setUser(result.data.user);
       } catch (error) {
         console.error('Login failed:', error);
       }
     },
-    onError: (error) => console.error('Login Failed:', error)
+    onError: error => console.error('Login Failed:', error),
   });
 
   const logout = async () => {
@@ -67,7 +67,7 @@ export const AuthProvider = ({ children }) => {
     user,
     login,
     logout,
-    loading
+    loading,
   };
 
   if (loading) {

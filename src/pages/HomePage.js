@@ -31,15 +31,15 @@ const SubNav = styled.div`
 const SubNavLink = styled.button`
   padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
   border: none;
-  background: ${({ active, theme }) => active ? theme.colors.primary : theme.colors.light};
-  color: ${({ active }) => active ? 'white' : 'inherit'};
+  background: ${({ active, theme }) => (active ? theme.colors.primary : theme.colors.light)};
+  color: ${({ active }) => (active ? 'white' : 'inherit')};
   border-radius: ${({ theme }) => theme.borderRadius.medium};
   cursor: pointer;
   white-space: nowrap;
-  font-weight: ${({ active }) => active ? '600' : '400'};
+  font-weight: ${({ active }) => (active ? '600' : '400')};
 
   &:hover {
-    background: ${({ active, theme }) => active ? theme.colors.primary : theme.colors.border};
+    background: ${({ active, theme }) => (active ? theme.colors.primary : theme.colors.border)};
   }
 `;
 
@@ -52,7 +52,7 @@ const HomePage = () => {
 
   const getFilteredMarkets = () => {
     let filteredMarkets = [];
-    
+
     // Filter by category
     if (activeCategory === 'all') {
       Object.values(markets).forEach(categoryMarkets => {
@@ -61,15 +61,16 @@ const HomePage = () => {
     } else {
       filteredMarkets = markets[activeCategory] || [];
     }
-    
+
     // Filter by search term
     if (searchTerm) {
-      filteredMarkets = filteredMarkets.filter(market => 
-        market.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        market.description.toLowerCase().includes(searchTerm.toLowerCase())
+      filteredMarkets = filteredMarkets.filter(
+        market =>
+          market.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          market.description.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
-    
+
     // Sort markets
     switch (sortBy) {
       case 'trending':

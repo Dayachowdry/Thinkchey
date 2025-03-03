@@ -7,22 +7,32 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  :root {
+    color-scheme: ${({ theme }) => (theme.isDark ? 'dark' : 'light')};
+  }
+
   body {
-    font-family: ${({ theme }) => theme.fonts.main};
+    font-family: ${({ theme }) => theme.fonts.primary};
     background: ${({ theme }) => theme.colors.background};
-    color: ${({ theme }) => theme.colors.text};
+    color: ${({ theme }) => theme.colors.textPrimary};
     line-height: 1.5;
     font-size: 16px;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   a {
     text-decoration: none;
     color: ${({ theme }) => theme.colors.primary};
     cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: ${({ theme }) => theme.colors.secondary};
+    }
   }
 
   button {
-    font-family: ${({ theme }) => theme.fonts.main};
+    font-family: ${({ theme }) => theme.fonts.primary};
     cursor: pointer;
     border: none;
     outline: none;
@@ -50,11 +60,12 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .card {
-    background: ${({ theme }) => theme.colors.background};
+    background: ${({ theme }) => theme.colors.cardBackground};
     border-radius: ${({ theme }) => theme.borderRadius.medium};
     box-shadow: ${({ theme }) => theme.shadows.small};
     padding: 1.5rem;
     margin-bottom: 1.5rem;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
   }
 
   .btn {
@@ -63,12 +74,13 @@ const GlobalStyle = createGlobalStyle`
     background: ${({ theme }) => theme.colors.primary};
     color: white;
     border-radius: ${({ theme }) => theme.borderRadius.medium};
-    transition: ${({ theme }) => theme.transitions.medium};
+    transition: all ${({ theme }) => theme.transitions.medium};
     font-weight: 500;
     text-align: center;
 
     &:hover {
       background: ${({ theme }) => theme.colors.secondary};
+      transform: translateY(-1px);
     }
 
     &.btn-secondary {
@@ -101,6 +113,28 @@ const GlobalStyle = createGlobalStyle`
         color: white;
       }
     }
+  }
+
+  /* Dark mode specific styles */
+  input, textarea, select {
+    background: ${({ theme }) => theme.colors.cardBackground};
+    color: ${({ theme }) => theme.colors.textPrimary};
+    border: 1px solid ${({ theme }) => theme.colors.border};
+    transition: all 0.3s ease;
+
+    &:focus {
+      border-color: ${({ theme }) => theme.colors.primary};
+      box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.primary}20;
+    }
+  }
+
+  ::placeholder {
+    color: ${({ theme }) => theme.colors.textSecondary};
+  }
+
+  ::selection {
+    background: ${({ theme }) => theme.colors.primary};
+    color: white;
   }
 `;
 

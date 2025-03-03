@@ -74,8 +74,9 @@ const PriceButton = styled.button`
   min-width: 100px;
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.small};
-  background: ${({ type, theme }) => type === 'yes' ? theme.colors.successLight : theme.colors.dangerLight};
-  color: ${({ type, theme }) => type === 'yes' ? theme.colors.success : theme.colors.danger};
+  background: ${({ type, theme }) =>
+    type === 'yes' ? theme.colors.successLight : theme.colors.dangerLight};
+  color: ${({ type, theme }) => (type === 'yes' ? theme.colors.success : theme.colors.danger)};
   font-weight: 500;
   cursor: pointer;
   text-align: center;
@@ -105,10 +106,8 @@ const MarketListItem = ({ market }) => {
 
   return (
     <Container to={`/market/${market.id}`}>
-      <MarketImage>
-        {market.icon || '🎯'}
-      </MarketImage>
-      
+      <MarketImage>{market.icon || '🎯'}</MarketImage>
+
       <MarketInfo>
         <Title>{market.title}</Title>
         <Metadata>
@@ -125,12 +124,8 @@ const MarketListItem = ({ market }) => {
       </MarketInfo>
 
       <PriceInfo>
-        <PriceButton type="yes">
-          Yes ₹{market.yesPrice}
-        </PriceButton>
-        <PriceButton type="no">
-          No ₹{market.noPrice}
-        </PriceButton>
+        <PriceButton type="yes">Yes ₹{market.yesPrice}</PriceButton>
+        <PriceButton type="no">No ₹{market.noPrice}</PriceButton>
         <Chance>{getChance()}% chance</Chance>
       </PriceInfo>
     </Container>

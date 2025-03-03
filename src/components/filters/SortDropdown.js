@@ -42,7 +42,7 @@ const Option = styled.button`
   width: 100%;
   padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
   border: none;
-  background: ${({ active, theme }) => active ? theme.colors.light : 'white'};
+  background: ${({ active, theme }) => (active ? theme.colors.light : 'white')};
   cursor: pointer;
   text-align: left;
   color: ${({ theme }) => theme.colors.dark};
@@ -57,14 +57,14 @@ const sortOptions = [
   { id: 'liquidity', label: 'Liquidity', icon: '💧' },
   { id: 'volume', label: 'Volume', icon: '📊' },
   { id: 'newest', label: 'Newest', icon: '🆕' },
-  { id: 'ending', label: 'Ending Soon', icon: '⏳' }
+  { id: 'ending', label: 'Ending Soon', icon: '⏳' },
 ];
 
 const SortDropdown = ({ value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const selectedOption = sortOptions.find(opt => opt.id === value) || sortOptions[0];
 
-  const handleSelect = (option) => {
+  const handleSelect = option => {
     onChange(option.id);
     setIsOpen(false);
   };

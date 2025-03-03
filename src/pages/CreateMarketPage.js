@@ -28,7 +28,7 @@ const FormCard = styled.div`
 
 const FormSection = styled.div`
   margin-bottom: 2rem;
-  
+
   &:last-child {
     margin-bottom: 0;
   }
@@ -57,7 +57,7 @@ const FormInput = styled.input`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.small};
   font-size: 1rem;
-  
+
   &:focus {
     outline: none;
     border-color: ${({ theme }) => theme.colors.primary};
@@ -73,7 +73,7 @@ const FormTextarea = styled.textarea`
   font-size: 1rem;
   min-height: 120px;
   resize: vertical;
-  
+
   &:focus {
     outline: none;
     border-color: ${({ theme }) => theme.colors.primary};
@@ -88,7 +88,7 @@ const FormSelect = styled.select`
   border-radius: ${({ theme }) => theme.borderRadius.small};
   font-size: 1rem;
   background-color: white;
-  
+
   &:focus {
     outline: none;
     border-color: ${({ theme }) => theme.colors.primary};
@@ -104,7 +104,7 @@ const OptionItem = styled.div`
   display: flex;
   gap: 1rem;
   margin-bottom: 1rem;
-  
+
   &:last-child {
     margin-bottom: 0;
   }
@@ -121,7 +121,7 @@ const AddOptionButton = styled.button`
   font-weight: 500;
   cursor: pointer;
   margin-top: 1rem;
-  
+
   &:hover {
     text-decoration: underline;
   }
@@ -132,7 +132,7 @@ const RemoveOptionButton = styled.button`
   color: ${({ theme }) => theme.colors.danger};
   border: none;
   cursor: pointer;
-  
+
   &:hover {
     text-decoration: underline;
   }
@@ -160,11 +160,11 @@ const SubmitButton = styled.button`
   font-weight: 600;
   cursor: pointer;
   transition: ${({ theme }) => theme.transitions.medium};
-  
+
   &:hover {
     background: ${({ theme }) => theme.colors.secondary};
   }
-  
+
   &:disabled {
     background: ${({ theme }) => theme.colors.border};
     cursor: not-allowed;
@@ -182,7 +182,7 @@ const CancelButton = styled.button`
   cursor: pointer;
   margin-right: 1rem;
   transition: ${({ theme }) => theme.transitions.medium};
-  
+
   &:hover {
     background: ${({ theme }) => theme.colors.backgroundAlt};
   }
@@ -204,10 +204,7 @@ const categories = [
   'Other',
 ];
 
-const resolutionTypes = [
-  'Yes/No',
-  'Multiple Choice',
-];
+const resolutionTypes = ['Yes/No', 'Multiple Choice'];
 
 const CreateMarketPage = () => {
   const navigate = useNavigate();
@@ -221,12 +218,12 @@ const CreateMarketPage = () => {
     options: resolutionTypes[0] === 'Multiple Choice' ? [{ text: '' }, { text: '' }] : [],
     initialLiquidity: '',
   });
-  
+
   const [errors, setErrors] = useState({});
-  
-  const handleChange = (e) => {
+
+  const handleChange = e => {
     const { name, value } = e.target;
-    
+
     if (name === 'resolutionType') {
       // Reset options if changing resolution type
       setFormData({
@@ -240,7 +237,7 @@ const CreateMarketPage = () => {
         [name]: value,
       });
     }
-    
+
     // Clear error for this field
     if (errors[name]) {
       setErrors({
@@ -249,16 +246,16 @@ const CreateMarketPage = () => {
       });
     }
   };
-  
+
   const handleOptionChange = (index, value) => {
     const newOptions = [...formData.options];
     newOptions[index].text = value;
-    
+
     setFormData({
       ...formData,
       options: newOptions,
     });
-    
+
     // Clear option errors
     if (errors.options) {
       setErrors({
@@ -267,56 +264,56 @@ const CreateMarketPage = () => {
       });
     }
   };
-  
+
   const addOption = () => {
     setFormData({
       ...formData,
       options: [...formData.options, { text: '' }],
     });
   };
-  
-  const removeOption = (index) => {
+
+  const removeOption = index => {
     const newOptions = [...formData.options];
     newOptions.splice(index, 1);
-    
+
     setFormData({
       ...formData,
       options: newOptions,
     });
   };
-  
+
   const validateForm = () => {
     const newErrors = {};
-    
+
     // Required fields
     if (!formData.title.trim()) {
       newErrors.title = 'Title is required';
     }
-    
+
     if (!formData.description.trim()) {
       newErrors.description = 'Description is required';
     }
-    
+
     if (!formData.category) {
       newErrors.category = 'Category is required';
     }
-    
+
     if (!formData.endDate) {
       newErrors.endDate = 'End date is required';
     } else {
       // Check if end date is in the future
       const selectedDate = new Date(formData.endDate);
       const currentDate = new Date();
-      
+
       if (selectedDate <= currentDate) {
         newErrors.endDate = 'End date must be in the future';
       }
     }
-    
+
     if (!formData.resolutionDetails.trim()) {
       newErrors.resolutionDetails = 'Resolution details are required';
     }
-    
+
     if (formData.resolutionType === 'Multiple Choice') {
       // Check if we have at least 2 options and none are empty
       if (formData.options.length < 2) {
@@ -325,48 +322,49 @@ const CreateMarketPage = () => {
         newErrors.options = 'All options must have text';
       }
     }
-    
+
     if (!formData.initialLiquidity.trim()) {
       newErrors.initialLiquidity = 'Initial liquidity is required';
     } else if (isNaN(Number(formData.initialLiquidity)) || Number(formData.initialLiquidity) <= 0) {
       newErrors.initialLiquidity = 'Initial liquidity must be a positive number';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-  
-  const handleSubmit = (e) => {
+
+  const handleSubmit = e => {
     e.preventDefault();
-    
+
     if (validateForm()) {
       // In a real app, this would create the market
       console.log('Creating market:', formData);
-      
+
       // Show success message and redirect
       alert('Market created successfully!');
       navigate('/explore');
     }
   };
-  
+
   const handleCancel = () => {
     if (window.confirm('Are you sure you want to cancel? All form data will be lost.')) {
       navigate('/explore');
     }
   };
-  
+
   return (
     <PageContainer>
       <PageTitle>Create a New Market</PageTitle>
       <PageDescription>
-        Create a prediction market for others to trade on. You'll need to provide liquidity to bootstrap the market.
+        Create a prediction market for others to trade on. You'll need to provide liquidity to
+        bootstrap the market.
       </PageDescription>
-      
+
       <form onSubmit={handleSubmit}>
         <FormCard>
           <FormSection>
             <SectionTitle>Basic Information</SectionTitle>
-            
+
             <FormGroup>
               <FormLabel htmlFor="title">Market Question *</FormLabel>
               <FormInput
@@ -381,7 +379,7 @@ const CreateMarketPage = () => {
                 Frame your question clearly. It should have a definitive answer by the end date.
               </FormHelp>
             </FormGroup>
-            
+
             <FormGroup>
               <FormLabel htmlFor="description">Market Description *</FormLabel>
               <FormTextarea
@@ -396,7 +394,7 @@ const CreateMarketPage = () => {
                 Describe the market in detail, including what it predicts and any relevant context.
               </FormHelp>
             </FormGroup>
-            
+
             <FormGroup>
               <FormLabel htmlFor="category">Category *</FormLabel>
               <FormSelect
@@ -406,7 +404,7 @@ const CreateMarketPage = () => {
                 onChange={handleChange}
               >
                 <option value="">Select a category</option>
-                {categories.map((category) => (
+                {categories.map(category => (
                   <option key={category} value={category}>
                     {category}
                   </option>
@@ -416,11 +414,11 @@ const CreateMarketPage = () => {
             </FormGroup>
           </FormSection>
         </FormCard>
-        
+
         <FormCard>
           <FormSection>
             <SectionTitle>Resolution Details</SectionTitle>
-            
+
             <FormGroup>
               <FormLabel htmlFor="resolutionType">Resolution Type *</FormLabel>
               <FormSelect
@@ -429,17 +427,18 @@ const CreateMarketPage = () => {
                 value={formData.resolutionType}
                 onChange={handleChange}
               >
-                {resolutionTypes.map((type) => (
+                {resolutionTypes.map(type => (
                   <option key={type} value={type}>
                     {type}
                   </option>
                 ))}
               </FormSelect>
               <FormHelp>
-                Yes/No markets have two possible outcomes. Multiple Choice markets can have two or more outcomes.
+                Yes/No markets have two possible outcomes. Multiple Choice markets can have two or
+                more outcomes.
               </FormHelp>
             </FormGroup>
-            
+
             {formData.resolutionType === 'Multiple Choice' && (
               <FormGroup>
                 <FormLabel>Possible Outcomes *</FormLabel>
@@ -448,14 +447,11 @@ const CreateMarketPage = () => {
                     <OptionItem key={index}>
                       <FormInput
                         value={option.text}
-                        onChange={(e) => handleOptionChange(index, e.target.value)}
+                        onChange={e => handleOptionChange(index, e.target.value)}
                         placeholder={`Option ${index + 1}`}
                       />
                       {formData.options.length > 2 && (
-                        <RemoveOptionButton 
-                          type="button" 
-                          onClick={() => removeOption(index)}
-                        >
+                        <RemoveOptionButton type="button" onClick={() => removeOption(index)}>
                           Remove
                         </RemoveOptionButton>
                       )}
@@ -468,7 +464,7 @@ const CreateMarketPage = () => {
                 </AddOptionButton>
               </FormGroup>
             )}
-            
+
             <FormGroup>
               <FormLabel htmlFor="endDate">End Date *</FormLabel>
               <FormInput
@@ -480,11 +476,9 @@ const CreateMarketPage = () => {
                 min={new Date().toISOString().split('T')[0]} // Set min date to today
               />
               {errors.endDate && <FormError>{errors.endDate}</FormError>}
-              <FormHelp>
-                The market will close for trading on this date.
-              </FormHelp>
+              <FormHelp>The market will close for trading on this date.</FormHelp>
             </FormGroup>
-            
+
             <FormGroup>
               <FormLabel htmlFor="resolutionDetails">Resolution Details *</FormLabel>
               <FormTextarea
@@ -496,16 +490,17 @@ const CreateMarketPage = () => {
               />
               {errors.resolutionDetails && <FormError>{errors.resolutionDetails}</FormError>}
               <FormHelp>
-                Specify the exact conditions under which this market will resolve, including sources of truth.
+                Specify the exact conditions under which this market will resolve, including sources
+                of truth.
               </FormHelp>
             </FormGroup>
           </FormSection>
         </FormCard>
-        
+
         <FormCard>
           <FormSection>
             <SectionTitle>Market Liquidity</SectionTitle>
-            
+
             <FormGroup>
               <FormLabel htmlFor="initialLiquidity">Initial Liquidity (USD) *</FormLabel>
               <FormInput
@@ -518,19 +513,18 @@ const CreateMarketPage = () => {
               />
               {errors.initialLiquidity && <FormError>{errors.initialLiquidity}</FormError>}
               <FormHelp>
-                The amount of funds you'll provide as initial liquidity. Higher liquidity generally results in better trading conditions.
+                The amount of funds you'll provide as initial liquidity. Higher liquidity generally
+                results in better trading conditions.
               </FormHelp>
             </FormGroup>
           </FormSection>
         </FormCard>
-        
+
         <ButtonContainer>
           <CancelButton type="button" onClick={handleCancel}>
             Cancel
           </CancelButton>
-          <SubmitButton type="submit">
-            Create Market
-          </SubmitButton>
+          <SubmitButton type="submit">Create Market</SubmitButton>
         </ButtonContainer>
       </form>
     </PageContainer>

@@ -9,19 +9,23 @@ const Button = styled.button`
   padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.lg};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.medium};
-  background: white;
-  color: ${({ theme }) => theme.colors.dark};
+  background: ${({ theme }) => theme.colors.cardBackground};
+  color: ${({ theme }) => theme.colors.textPrimary};
   cursor: pointer;
-  transition: ${({ theme }) => theme.transitions.medium};
+  transition: all ${({ theme }) => theme.transitions.medium};
   font-weight: 500;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.light};
+    background: ${({ theme }) => theme.colors.backgroundAlt};
+    border-color: ${({ theme }) => theme.colors.primary};
+    transform: translateY(-1px);
   }
 
   img {
     width: 20px;
     height: 20px;
+    filter: ${({ theme }) => theme.colors.textPrimary === '#FCFCFD' ? 'invert(1)' : 'none'};
+    transition: filter ${({ theme }) => theme.transitions.medium};
   }
 `;
 

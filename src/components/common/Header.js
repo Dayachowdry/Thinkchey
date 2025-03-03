@@ -30,7 +30,7 @@ const Logo = styled(Link)`
   color: ${({ theme }) => theme.colors.primary};
   display: flex;
   align-items: center;
-  
+
   span {
     margin-left: 0.5rem;
   }
@@ -99,7 +99,7 @@ const HamburgerButton = styled.button`
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  
+
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     display: block;
     position: absolute;
@@ -116,7 +116,7 @@ const Header = () => {
     setIsNavOpen(!isNavOpen);
   };
 
-  const isActive = (path) => {
+  const isActive = path => {
     return location.pathname === path;
   };
 
@@ -127,9 +127,7 @@ const Header = () => {
           <span>Thinkchey</span>
         </Logo>
 
-        <HamburgerButton onClick={toggleNav}>
-          ☰
-        </HamburgerButton>
+        <HamburgerButton onClick={toggleNav}>☰</HamburgerButton>
 
         <Nav isOpen={isNavOpen}>
           <NavLink to="/" active={isActive('/')}>

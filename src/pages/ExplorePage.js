@@ -33,16 +33,16 @@ const CategoryTabs = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing.xl};
   overflow-x: auto;
   padding-bottom: ${({ theme }) => theme.spacing.sm};
-  
+
   &::-webkit-scrollbar {
     height: 4px;
   }
-  
+
   &::-webkit-scrollbar-track {
     background: ${({ theme }) => theme.colors.light};
     border-radius: ${({ theme }) => theme.borderRadius.small};
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background: ${({ theme }) => theme.colors.primary};
     border-radius: ${({ theme }) => theme.borderRadius.small};
@@ -53,8 +53,8 @@ const CategoryTab = styled.button`
   padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.lg};
   border-radius: ${({ theme }) => theme.borderRadius.medium};
   border: none;
-  background: ${({ active, theme }) => active ? theme.colors.primary : theme.colors.light};
-  color: ${({ active, theme }) => active ? 'white' : theme.colors.textSecondary};
+  background: ${({ active, theme }) => (active ? theme.colors.primary : theme.colors.light)};
+  color: ${({ active, theme }) => (active ? 'white' : theme.colors.textSecondary)};
   font-weight: 500;
   cursor: pointer;
   transition: ${({ theme }) => theme.transitions.medium};
@@ -62,7 +62,7 @@ const CategoryTab = styled.button`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.sm};
-  
+
   &:hover {
     transform: translateY(-2px);
     box-shadow: ${({ theme }) => theme.shadows.small};
@@ -76,7 +76,7 @@ const SearchInput = styled.input`
   border-radius: ${({ theme }) => theme.borderRadius.medium};
   margin-bottom: ${({ theme }) => theme.spacing.xl};
   font-size: ${({ theme }) => theme.fontSizes.md};
-  
+
   &:focus {
     outline: none;
     border-color: ${({ theme }) => theme.colors.primary};
@@ -98,10 +98,10 @@ const NoResults = styled.div`
 const ExplorePage = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
-  
+
   const getFilteredMarkets = () => {
     let filteredMarkets = [];
-    
+
     if (activeCategory === 'all') {
       Object.values(markets).forEach(categoryMarkets => {
         filteredMarkets = [...filteredMarkets, ...categoryMarkets];
@@ -109,14 +109,15 @@ const ExplorePage = () => {
     } else {
       filteredMarkets = markets[activeCategory] || [];
     }
-    
+
     if (searchTerm) {
-      return filteredMarkets.filter(market => 
-        market.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        market.description.toLowerCase().includes(searchTerm.toLowerCase())
+      return filteredMarkets.filter(
+        market =>
+          market.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          market.description.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
-    
+
     return filteredMarkets;
   };
 
@@ -128,10 +129,7 @@ const ExplorePage = () => {
       </Header>
 
       <CategoryTabs>
-        <CategoryTab
-          active={activeCategory === 'all'}
-          onClick={() => setActiveCategory('all')}
-        >
+        <CategoryTab active={activeCategory === 'all'} onClick={() => setActiveCategory('all')}>
           🎯 All Markets
         </CategoryTab>
         {categories.map(category => (
@@ -149,7 +147,7 @@ const ExplorePage = () => {
         type="text"
         placeholder="Search markets..."
         value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        onChange={e => setSearchTerm(e.target.value)}
       />
 
       <MarketsGrid>
@@ -159,9 +157,7 @@ const ExplorePage = () => {
       </MarketsGrid>
 
       {getFilteredMarkets().length === 0 && (
-        <NoResults>
-          No markets found. Try adjusting your search or filters.
-        </NoResults>
+        <NoResults>No markets found. Try adjusting your search or filters.</NoResults>
       )}
     </Container>
   );

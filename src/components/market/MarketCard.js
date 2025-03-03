@@ -13,7 +13,7 @@ const Card = styled(Link)`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.md};
-  
+
   &:hover {
     transform: translateY(-4px);
     box-shadow: ${({ theme }) => theme.shadows.medium};
@@ -62,7 +62,8 @@ const PriceContainer = styled.div`
 
 const PriceBox = styled.div`
   flex: 1;
-  background: ${({ theme, type }) => type === 'yes' ? theme.colors.successLight : theme.colors.dangerLight};
+  background: ${({ theme, type }) =>
+    type === 'yes' ? theme.colors.successLight : theme.colors.dangerLight};
   padding: ${({ theme }) => theme.spacing.sm};
   border-radius: ${({ theme }) => theme.borderRadius.small};
   text-align: center;
@@ -77,7 +78,7 @@ const PriceLabel = styled.div`
 const Price = styled.div`
   font-size: ${({ theme }) => theme.fontSizes.lg};
   font-weight: 600;
-  color: ${({ theme, type }) => type === 'yes' ? theme.colors.success : theme.colors.danger};
+  color: ${({ theme, type }) => (type === 'yes' ? theme.colors.success : theme.colors.danger)};
 `;
 
 const MarketCard = ({ market }) => {

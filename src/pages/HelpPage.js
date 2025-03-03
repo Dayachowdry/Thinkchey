@@ -103,15 +103,15 @@ const HelpPage = () => {
             <Question>
               <QuestionTitle>What is Thinkchey?</QuestionTitle>
               <QuestionText>
-                Thinkchey is a prediction market platform where you can trade on future events
-                and earn rewards for accurate predictions.
+                Thinkchey is a prediction market platform where you can trade on future events and
+                earn rewards for accurate predictions.
               </QuestionText>
             </Question>
             <Question>
               <QuestionTitle>How do I start trading?</QuestionTitle>
               <QuestionText>
-                Sign up using your Google account, get your initial balance, and start
-                making predictions on events you're knowledgeable about.
+                Sign up using your Google account, get your initial balance, and start making
+                predictions on events you're knowledgeable about.
               </QuestionText>
             </Question>
           </QuestionList>
@@ -123,16 +123,16 @@ const HelpPage = () => {
             <Question>
               <QuestionTitle>How do prediction markets work?</QuestionTitle>
               <QuestionText>
-                Each market represents a question about a future event. You can buy shares
-                in either "Yes" or "No" outcomes. The price represents the probability of
-                that outcome occurring.
+                Each market represents a question about a future event. You can buy shares in either
+                "Yes" or "No" outcomes. The price represents the probability of that outcome
+                occurring.
               </QuestionText>
             </Question>
             <Question>
               <QuestionTitle>How are markets resolved?</QuestionTitle>
               <QuestionText>
-                When an event occurs, markets are resolved based on the actual outcome.
-                Winning positions receive ₹1 per share, losing positions receive ₹0.
+                When an event occurs, markets are resolved based on the actual outcome. Winning
+                positions receive ₹1 per share, losing positions receive ₹0.
               </QuestionText>
             </Question>
           </QuestionList>
@@ -144,15 +144,15 @@ const HelpPage = () => {
             <Question>
               <QuestionTitle>How do I manage my account?</QuestionTitle>
               <QuestionText>
-                Access your account settings through the profile dropdown menu to update
-                your information and manage security preferences.
+                Access your account settings through the profile dropdown menu to update your
+                information and manage security preferences.
               </QuestionText>
             </Question>
             <Question>
               <QuestionTitle>Is my information secure?</QuestionTitle>
               <QuestionText>
-                We use industry-standard security measures to protect your data. Your
-                account is secured through Google's authentication system.
+                We use industry-standard security measures to protect your data. Your account is
+                secured through Google's authentication system.
               </QuestionText>
             </Question>
           </QuestionList>
