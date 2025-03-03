@@ -108,7 +108,8 @@ const MarketPage = () => {
 };
 
 MarketPage.propTypes = {
-  // Add PropTypes here when we add props
+  // Since this component uses route params and doesn't accept direct props,
+  // we don't need prop validations here
 };
 
 export default MarketPage;

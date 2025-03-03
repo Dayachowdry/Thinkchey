@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -12,13 +13,13 @@ const Button = styled.button`
   padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.medium};
-  background: white;
+  background: ${({ theme }) => theme.colors.cardBackground};
   cursor: pointer;
   font-size: ${({ theme }) => theme.fontSizes.md};
-  color: ${({ theme }) => theme.colors.dark};
+  color: ${({ theme }) => theme.colors.textPrimary};
 
   &:hover {
-    background: ${({ theme }) => theme.colors.light};
+    background: ${({ theme }) => theme.colors.backgroundAlt};
   }
 `;
 
@@ -27,7 +28,7 @@ const Dropdown = styled.div`
   top: 100%;
   left: 0;
   margin-top: ${({ theme }) => theme.spacing.xs};
-  background: white;
+  background: ${({ theme }) => theme.colors.cardBackground};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.medium};
   box-shadow: ${({ theme }) => theme.shadows.medium};
@@ -42,13 +43,14 @@ const Option = styled.button`
   width: 100%;
   padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
   border: none;
-  background: ${({ active, theme }) => (active ? theme.colors.light : 'white')};
+  background: ${({ active, theme }) =>
+    active ? theme.colors.backgroundAlt : theme.colors.cardBackground};
   cursor: pointer;
   text-align: left;
-  color: ${({ theme }) => theme.colors.dark};
+  color: ${({ theme }) => theme.colors.textPrimary};
 
   &:hover {
-    background: ${({ theme }) => theme.colors.light};
+    background: ${({ theme }) => theme.colors.backgroundAlt};
   }
 `;
 
@@ -93,6 +95,11 @@ const SortDropdown = ({ value, onChange }) => {
       )}
     </Container>
   );
+};
+
+SortDropdown.propTypes = {
+  value: PropTypes.oneOf(sortOptions.map(opt => opt.id)).isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default SortDropdown;

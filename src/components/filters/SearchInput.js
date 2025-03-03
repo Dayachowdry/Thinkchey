@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -13,6 +14,8 @@ const Input = styled.input`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.medium};
   font-size: ${({ theme }) => theme.fontSizes.md};
+  background: ${({ theme }) => theme.colors.cardBackground};
+  color: ${({ theme }) => theme.colors.textPrimary};
 
   &:focus {
     outline: none;
@@ -40,6 +43,11 @@ const SearchInput = ({ value, onChange }) => {
       />
     </Container>
   );
+};
+
+SearchInput.propTypes = {
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default SearchInput;

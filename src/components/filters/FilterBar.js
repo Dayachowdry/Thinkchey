@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import SortDropdown from './SortDropdown';
 import SearchInput from './SearchInput';
@@ -28,6 +29,15 @@ const FilterBar = ({
       <ViewToggle value={viewMode} onChange={onViewModeChange} />
     </Container>
   );
+};
+
+FilterBar.propTypes = {
+  sortBy: PropTypes.string.isRequired,
+  onSortChange: PropTypes.func.isRequired,
+  searchTerm: PropTypes.string.isRequired,
+  onSearchChange: PropTypes.func.isRequired,
+  viewMode: PropTypes.string.isRequired,
+  onViewModeChange: PropTypes.func.isRequired,
 };
 
 export default FilterBar;

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 
@@ -75,6 +76,10 @@ export const AuthProvider = ({ children }) => {
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
+
+AuthProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default AuthContext;
