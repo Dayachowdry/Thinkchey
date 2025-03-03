@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
@@ -7,11 +8,11 @@ const Container = styled(Link)`
   align-items: center;
   gap: ${({ theme }) => theme.spacing.lg};
   padding: ${({ theme }) => theme.spacing.lg};
-  background: white;
+  background: ${({ theme }) => theme.colors.cardBackground};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.medium};
   text-decoration: none;
-  color: inherit;
+  color: ${({ theme }) => theme.colors.textPrimary};
   transition: ${({ theme }) => theme.transitions.medium};
 
   &:hover {
@@ -24,7 +25,7 @@ const MarketImage = styled.div`
   width: 48px;
   height: 48px;
   border-radius: ${({ theme }) => theme.borderRadius.small};
-  background: ${({ theme }) => theme.colors.light};
+  background: ${({ theme }) => theme.colors.backgroundAlt};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -40,7 +41,7 @@ const MarketInfo = styled.div`
 const Title = styled.h3`
   margin: 0;
   font-size: ${({ theme }) => theme.fontSizes.lg};
-  color: ${({ theme }) => theme.colors.dark};
+  color: ${({ theme }) => theme.colors.textPrimary};
   margin-bottom: ${({ theme }) => theme.spacing.xs};
   white-space: nowrap;
   overflow: hidden;
@@ -57,7 +58,7 @@ const Metadata = styled.div`
 
 const Tag = styled.span`
   padding: ${({ theme }) => theme.spacing.xs} ${({ theme }) => theme.spacing.sm};
-  background: ${({ theme }) => theme.colors.light};
+  background: ${({ theme }) => theme.colors.backgroundAlt};
   border-radius: ${({ theme }) => theme.borderRadius.small};
   font-size: ${({ theme }) => theme.fontSizes.sm};
 `;
@@ -92,7 +93,7 @@ const Chance = styled.div`
   position: absolute;
   top: -8px;
   right: -8px;
-  background: ${({ theme }) => theme.colors.light};
+  background: ${({ theme }) => theme.colors.backgroundAlt};
   padding: ${({ theme }) => theme.spacing.xs} ${({ theme }) => theme.spacing.sm};
   border-radius: ${({ theme }) => theme.borderRadius.small};
   font-size: ${({ theme }) => theme.fontSizes.sm};
@@ -130,6 +131,19 @@ const MarketListItem = ({ market }) => {
       </PriceInfo>
     </Container>
   );
+};
+
+MarketListItem.propTypes = {
+  market: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    category: PropTypes.string.isRequired,
+    volume: PropTypes.string.isRequired,
+    yesPrice: PropTypes.number.isRequired,
+    noPrice: PropTypes.number.isRequired,
+    icon: PropTypes.string,
+    endDate: PropTypes.string,
+  }).isRequired,
 };
 
 export default MarketListItem;

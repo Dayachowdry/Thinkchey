@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import * as S from './MarketPage.styles';
 
 const MarketPage = () => {
@@ -105,11 +104,6 @@ const MarketPage = () => {
       </S.MarketGrid>
     </S.MarketContainer>
   );
-};
-
-MarketPage.propTypes = {
-  // Since this component uses route params and doesn't accept direct props,
-  // we don't need prop validations here
 };
 
 export default MarketPage;
