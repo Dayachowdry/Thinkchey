@@ -1,63 +1,80 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useGoogleLogin } from '@react-oauth/google';
+import axios from 'axios';
 
-const AuthContext = createContext(null);
+const AuthContext = createContext();
+
+export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Check if user is already logged in
+    const checkAuth = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/auth/user`, {
+          withCredentials: true
+        });
+        if (response.data.user) {
+          setUser(response.data.user);
+        }
+      } catch (error) {
+        console.log('Not authenticated');
+      } finally {
+        setLoading(false);
+      }
+    };
+
     checkAuth();
   }, []);
 
-  const checkAuth = async () => {
-    try {
-      const res = await fetch('/api/user/profile', {
-        credentials: 'include'
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        setUser(data.user);
+  const login = useGoogleLogin({
+    onSuccess: async (response) => {
+      try {
+        // Send access token to backend
+        const result = await axios.post(
+          `${process.env.REACT_APP_API_URL}/api/auth/google`,
+          {
+            access_token: response.access_token,
+          },
+          { withCredentials: true }
+        );
+        
+        setUser(result.data.user);
+      } catch (error) {
+        console.error('Login failed:', error);
       }
-    } catch (error) {
-      console.error('Auth check failed:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const login = (userData) => {
-    setUser(userData);
-  };
+    },
+    onError: (error) => console.error('Login Failed:', error)
+  });
 
   const logout = async () => {
     try {
-      await fetch('/api/auth/logout', {
-        method: 'POST',
-        credentials: 'include'
-      });
+      await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/auth/logout`,
+        {},
+        { withCredentials: true }
+      );
       setUser(null);
     } catch (error) {
       console.error('Logout failed:', error);
     }
   };
 
+  const value = {
+    user,
+    login,
+    logout,
+    loading
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  return (
-    <AuthContext.Provider value={{ user, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
+export default AuthContext;

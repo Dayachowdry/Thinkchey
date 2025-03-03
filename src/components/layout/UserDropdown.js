@@ -1,13 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAuth } from '../../contexts/AuthContext';
 import LoginButton from '../auth/LoginButton';
 
-const Container = styled.div`
+const DropdownContainer = styled.div`
   position: relative;
+  display: inline-block;
 `;
 
-const DropdownTrigger = styled.button`
+const UserButton = styled.button`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.sm};
@@ -23,14 +25,7 @@ const DropdownTrigger = styled.button`
   }
 `;
 
-const UserAvatar = styled.img`
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  object-fit: cover;
-`;
-
-const DefaultAvatar = styled.div`
+const Avatar = styled.div`
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -40,72 +35,76 @@ const DefaultAvatar = styled.div`
   align-items: center;
   justify-content: center;
   font-weight: 600;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+`;
+
+const UserInfo = styled.div`
+  text-align: left;
+`;
+
+const UserName = styled.div`
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.dark};
+`;
+
+const Balance = styled.div`
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  color: ${({ theme }) => theme.colors.textSecondary};
 `;
 
 const DropdownMenu = styled.div`
   position: absolute;
-  top: calc(100% + ${({ theme }) => theme.spacing.xs});
+  top: 100%;
   right: 0;
-  min-width: 240px;
+  margin-top: ${({ theme }) => theme.spacing.sm};
   background: white;
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.medium};
   box-shadow: ${({ theme }) => theme.shadows.medium};
+  min-width: 200px;
   z-index: 1000;
-  overflow: hidden;
+  display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
 `;
 
-const MenuItem = styled.button`
+const MenuItem = styled(Link)`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.sm};
-  width: 100%;
   padding: ${({ theme }) => theme.spacing.md};
-  border: none;
-  background: white;
-  cursor: pointer;
-  text-align: left;
+  color: ${({ theme }) => theme.colors.dark};
+  text-decoration: none;
   transition: ${({ theme }) => theme.transitions.medium};
 
   &:hover {
     background: ${({ theme }) => theme.colors.light};
   }
 
-  ${({ variant }) => variant === 'danger' && `
-    color: ${({ theme }) => theme.colors.danger};
-  `}
+  &:not(:last-child) {
+    border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  }
 `;
 
-const Divider = styled.div`
-  height: 1px;
-  background: ${({ theme }) => theme.colors.border};
-  margin: ${({ theme }) => theme.spacing.xs} 0;
-`;
-
-const UserInfo = styled.div`
+const LogoutButton = styled.button`
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.sm};
   padding: ${({ theme }) => theme.spacing.md};
-  background: ${({ theme }) => theme.colors.light};
-`;
+  color: ${({ theme }) => theme.colors.danger};
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: ${({ theme }) => theme.transitions.medium};
 
-const UserName = styled.div`
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.dark};
-`;
-
-const UserEmail = styled.div`
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-  color: ${({ theme }) => theme.colors.textSecondary};
-`;
-
-const Balance = styled.div`
-  margin-top: ${({ theme }) => theme.spacing.xs};
-  font-weight: 500;
-  color: ${({ theme }) => theme.colors.success};
+  &:hover {
+    background: ${({ theme }) => theme.colors.light};
+  }
 `;
 
 const UserDropdown = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const { user, logout } = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -119,11 +118,6 @@ const UserDropdown = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleLogout = async () => {
-    await logout();
-    setIsOpen(false);
-  };
-
   if (!user) {
     return <LoginButton />;
   }
@@ -136,50 +130,36 @@ const UserDropdown = () => {
       .toUpperCase();
   };
 
-  return (
-    <Container ref={dropdownRef}>
-      <DropdownTrigger onClick={() => setIsOpen(!isOpen)}>
-        {user.picture ? (
-          <UserAvatar src={user.picture} alt={user.name} />
-        ) : (
-          <DefaultAvatar>{getInitials(user.name)}</DefaultAvatar>
-        )}
-      </DropdownTrigger>
+  const handleLogout = async () => {
+    await logout();
+    setIsOpen(false);
+  };
 
-      {isOpen && (
-        <DropdownMenu>
-          <UserInfo>
-            <UserName>{user.name}</UserName>
-            <UserEmail>{user.email}</UserEmail>
-            <Balance>Balance: ₹{user.balance.toLocaleString()}</Balance>
-          </UserInfo>
-          
-          <MenuItem onClick={() => window.location.href = '/account'}>
-            👤 Account Settings
-          </MenuItem>
-          
-          <MenuItem onClick={() => window.location.href = '/markets'}>
-            📊 My Markets
-          </MenuItem>
-          
-          <MenuItem onClick={() => window.location.href = '/transactions'}>
-            💰 Transaction History
-          </MenuItem>
-          
-          <Divider />
-          
-          <MenuItem onClick={() => window.location.href = '/help'}>
-            ❓ Help Center
-          </MenuItem>
-          
-          <Divider />
-          
-          <MenuItem onClick={handleLogout} variant="danger">
-            🚪 Sign Out
-          </MenuItem>
-        </DropdownMenu>
-      )}
-    </Container>
+  return (
+    <DropdownContainer ref={dropdownRef}>
+      <UserButton onClick={() => setIsOpen(!isOpen)}>
+        <Avatar>{getInitials(user.name)}</Avatar>
+        <UserInfo>
+          <UserName>{user.name}</UserName>
+          <Balance>₹{user.balance || 0}</Balance>
+        </UserInfo>
+      </UserButton>
+
+      <DropdownMenu isOpen={isOpen}>
+        <MenuItem to="/account">
+          <i className="fas fa-user" />
+          Account Settings
+        </MenuItem>
+        <MenuItem to="/help">
+          <i className="fas fa-question-circle" />
+          Help Center
+        </MenuItem>
+        <LogoutButton onClick={handleLogout}>
+          <i className="fas fa-sign-out-alt" />
+          Sign Out
+        </LogoutButton>
+      </DropdownMenu>
+    </DropdownContainer>
   );
 };
 

@@ -2,11 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const { OAuth2Client } = require('google-auth-library');
 const jwt = require('jsonwebtoken');
+const { OAuth2Client } = require('google-auth-library');
 const User = require('./models/user');
 
 const app = express();
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // Middleware
 app.use(express.json());
@@ -15,19 +16,16 @@ app.use(cookieParser());
 // CORS configuration with multiple origins
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://your-netlify-app-name.netlify.app'  // Replace with your Netlify domain
+  'https://thinkchey.netlify.app'  // Update this with your Netlify domain
 ];
 
 app.use(cors({
   origin: function(origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
     }
-    return callback(null, true);
   },
   credentials: true
 }));
@@ -42,73 +40,84 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/thinkchey
   console.error('MongoDB connection error:', err);
 });
 
-// Google OAuth client
-const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-
-// Authentication middleware
-const authenticateToken = async (req, res, next) => {
-  const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
-
-  if (!token) {
-    return res.status(401).json({ message: 'Authentication required' });
-  }
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
-    req.user = await User.findById(decoded.userId);
-    next();
-  } catch (error) {
-    return res.status(401).json({ message: 'Invalid token' });
-  }
-};
-
-// Auth routes
+// Auth Routes
 app.post('/api/auth/google', async (req, res) => {
-  const { token } = req.body;
-
   try {
-    // Verify Google token
-    const ticket = await googleClient.verifyIdToken({
-      idToken: token,
-      audience: process.env.GOOGLE_CLIENT_ID
+    const { access_token } = req.body;
+    
+    // Get user info from Google
+    const response = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+      headers: { Authorization: `Bearer ${access_token}` },
     });
-
-    const payload = ticket.getPayload();
-    const { email, name, picture, sub: googleId } = payload;
+    
+    const userData = await response.json();
+    
+    if (!userData.email) {
+      return res.status(400).json({ message: 'Invalid Google token' });
+    }
 
     // Find or create user
-    let user = await User.findOne({ googleId });
+    let user = await User.findOne({ email: userData.email });
     
     if (!user) {
       user = await User.create({
-        email,
-        name,
-        picture,
-        googleId
+        email: userData.email,
+        name: userData.name,
+        picture: userData.picture,
+        googleId: userData.sub,
+        balance: 1000 // Starting balance
       });
-    } else {
-      // Update last login
-      user.lastLogin = new Date();
-      await user.save();
     }
 
-    // Generate JWT
-    const jwtToken = jwt.sign(
+    // Create JWT
+    const token = jwt.sign(
       { userId: user._id },
       process.env.JWT_SECRET || 'your-secret-key',
       { expiresIn: '7d' }
     );
 
     // Set cookie with production-ready settings
-    res.cookie('token', jwtToken, {
+    res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       domain: process.env.NODE_ENV === 'production' 
-        ? '.your-netlify-app-name.netlify.app'  // Replace with your Netlify domain
+        ? '.thinkchey.netlify.app'  // Update this with your Netlify domain
         : 'localhost'
     });
+
+    // Return user data
+    res.json({
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        picture: user.picture,
+        balance: user.balance
+      }
+    });
+  } catch (error) {
+    console.error('Auth error:', error);
+    res.status(500).json({ message: 'Authentication failed' });
+  }
+});
+
+// Get current user
+app.get('/api/auth/user', async (req, res) => {
+  try {
+    const token = req.cookies.token;
+    
+    if (!token) {
+      return res.status(401).json({ message: 'Not authenticated' });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+    const user = await User.findById(decoded.userId);
+    
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
 
     res.json({
       user: {
@@ -120,27 +129,53 @@ app.post('/api/auth/google', async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Google auth error:', error);
-    res.status(401).json({ message: 'Invalid Google token' });
+    res.status(401).json({ message: 'Invalid token' });
   }
 });
 
-// Protected routes
-app.get('/api/user/profile', authenticateToken, async (req, res) => {
-  res.json({
-    user: {
-      id: req.user._id,
-      name: req.user.name,
-      email: req.user.email,
-      picture: req.user.picture,
-      balance: req.user.balance
-    }
+// Logout
+app.post('/api/auth/logout', (req, res) => {
+  res.cookie('token', '', {
+    httpOnly: true,
+    expires: new Date(0),
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    domain: process.env.NODE_ENV === 'production' 
+      ? '.thinkchey.netlify.app'  // Update this with your Netlify domain
+      : 'localhost'
   });
+  
+  res.json({ message: 'Logged out successfully' });
 });
 
-app.post('/api/auth/logout', (req, res) => {
-  res.clearCookie('token');
-  res.json({ message: 'Logged out successfully' });
+// Protected routes
+app.get('/api/user/profile', async (req, res) => {
+  try {
+    const token = req.cookies.token;
+    
+    if (!token) {
+      return res.status(401).json({ message: 'Not authenticated' });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+    const user = await User.findById(decoded.userId);
+    
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        picture: user.picture,
+        balance: user.balance
+      }
+    });
+  } catch (error) {
+    res.status(401).json({ message: 'Invalid token' });
+  }
 });
 
 const PORT = process.env.PORT || 5000;
