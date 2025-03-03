@@ -111,7 +111,7 @@ const HelpPage = () => {
               <QuestionTitle>How do I start trading?</QuestionTitle>
               <QuestionText>
                 Sign up using your Google account, get your initial balance, and start making
-                predictions on events you're knowledgeable about.
+                predictions on events you&apos;re knowledgeable about.
               </QuestionText>
             </Question>
           </QuestionList>
@@ -124,8 +124,8 @@ const HelpPage = () => {
               <QuestionTitle>How do prediction markets work?</QuestionTitle>
               <QuestionText>
                 Each market represents a question about a future event. You can buy shares in either
-                "Yes" or "No" outcomes. The price represents the probability of that outcome
-                occurring.
+                &quot;Yes&quot; or &quot;No&quot; outcomes. The price represents the probability of
+                that outcome occurring.
               </QuestionText>
             </Question>
             <Question>
@@ -152,7 +152,7 @@ const HelpPage = () => {
               <QuestionTitle>Is my information secure?</QuestionTitle>
               <QuestionText>
                 We use industry-standard security measures to protect your data. Your account is
-                secured through Google's authentication system.
+                secured through Google&apos;s authentication system.
               </QuestionText>
             </Question>
           </QuestionList>
