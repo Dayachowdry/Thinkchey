@@ -1,26 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useAuth } from '../contexts/AuthContext';
 import Layout from '../components/layout/Layout';
+import { useAuth } from '../contexts/AuthContext';
 
 const Container = styled.div`
   max-width: 800px;
   margin: 0 auto;
   padding: ${({ theme }) => theme.spacing.xl};
-`;
-
-const Header = styled.div`
-  margin-bottom: ${({ theme }) => theme.spacing.xl};
-`;
-
-const Title = styled.h1`
-  font-size: ${({ theme }) => theme.fontSizes['2xl']};
-  color: ${({ theme }) => theme.colors.dark};
-  margin-bottom: ${({ theme }) => theme.spacing.sm};
-`;
-
-const Subtitle = styled.p`
-  color: ${({ theme }) => theme.colors.textSecondary};
 `;
 
 const Section = styled.div`
@@ -37,50 +23,54 @@ const SectionTitle = styled.h2`
   margin-bottom: ${({ theme }) => theme.spacing.lg};
 `;
 
-const Field = styled.div`
-  margin-bottom: ${({ theme }) => theme.spacing.lg};
-
-  &:last-child {
-    margin-bottom: 0;
-  }
+const ProfileInfo = styled.div`
+  display: grid;
+  gap: ${({ theme }) => theme.spacing.lg};
 `;
 
-const Label = styled.div`
-  font-weight: 500;
+const InfoItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.md};
+`;
+
+const Label = styled.span`
+  font-weight: 600;
   color: ${({ theme }) => theme.colors.textSecondary};
-  margin-bottom: ${({ theme }) => theme.spacing.xs};
+  width: 120px;
 `;
 
-const Value = styled.div`
+const Value = styled.span`
   color: ${({ theme }) => theme.colors.dark};
-  font-size: ${({ theme }) => theme.fontSizes.lg};
 `;
 
-const Button = styled.button`
-  padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.lg};
-  border: 1px solid ${({ theme }) => theme.colors.border};
+const DangerZone = styled(Section)`
+  border-color: ${({ theme }) => theme.colors.danger};
+`;
+
+const DeleteButton = styled.button`
+  background: ${({ theme }) => theme.colors.danger};
+  color: white;
+  border: none;
+  padding: ${({ theme }) => theme.spacing.md} ${({ theme }) => theme.spacing.xl};
   border-radius: ${({ theme }) => theme.borderRadius.medium};
-  background: white;
-  color: ${({ theme }) => theme.colors.dark};
   cursor: pointer;
   transition: ${({ theme }) => theme.transitions.medium};
 
   &:hover {
-    background: ${({ theme }) => theme.colors.light};
+    opacity: 0.9;
   }
-
-  ${({ variant }) => variant === 'danger' && `
-    color: ${({ theme }) => theme.colors.danger};
-    border-color: ${({ theme }) => theme.colors.danger};
-
-    &:hover {
-      background: ${({ theme }) => theme.colors.dangerLight};
-    }
-  `}
 `;
 
 const AccountPage = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
+
+  const handleDeleteAccount = () => {
+    // Implement account deletion logic
+    if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+      // Add deletion logic here
+    }
+  };
 
   if (!user) {
     return <div>Please sign in to view this page.</div>;
@@ -89,44 +79,30 @@ const AccountPage = () => {
   return (
     <Layout>
       <Container>
-        <Header>
-          <Title>Account Settings</Title>
-          <Subtitle>Manage your account settings and preferences</Subtitle>
-        </Header>
-
         <Section>
           <SectionTitle>Profile Information</SectionTitle>
-          <Field>
-            <Label>Name</Label>
-            <Value>{user.name}</Value>
-          </Field>
-          <Field>
-            <Label>Email</Label>
-            <Value>{user.email}</Value>
-          </Field>
-          <Field>
-            <Label>Account Balance</Label>
-            <Value>₹{user.balance.toLocaleString()}</Value>
-          </Field>
+          <ProfileInfo>
+            <InfoItem>
+              <Label>Name:</Label>
+              <Value>{user?.name || 'Not available'}</Value>
+            </InfoItem>
+            <InfoItem>
+              <Label>Email:</Label>
+              <Value>{user?.email || 'Not available'}</Value>
+            </InfoItem>
+            <InfoItem>
+              <Label>Balance:</Label>
+              <Value>₹{user?.balance || '0'}</Value>
+            </InfoItem>
+          </ProfileInfo>
         </Section>
 
-        <Section>
-          <SectionTitle>Account Security</SectionTitle>
-          <Field>
-            <Label>Password</Label>
-            <Value>••••••••</Value>
-          </Field>
-          <Button>Change Password</Button>
-        </Section>
-
-        <Section>
+        <DangerZone>
           <SectionTitle>Danger Zone</SectionTitle>
-          <Field>
-            <Label>Delete Account</Label>
-            <Value>Once you delete your account, there is no going back. Please be certain.</Value>
-          </Field>
-          <Button variant="danger">Delete Account</Button>
-        </Section>
+          <DeleteButton onClick={handleDeleteAccount}>
+            Delete Account
+          </DeleteButton>
+        </DangerZone>
       </Container>
     </Layout>
   );
