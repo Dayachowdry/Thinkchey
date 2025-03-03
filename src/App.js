@@ -1,41 +1,34 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
-import GlobalStyle from './components/common/GlobalStyle';
-import theme from './utils/theme';
-
-// Pages
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { AuthProvider } from './contexts/AuthContext';
+import { theme } from './theme/theme';
 import HomePage from './pages/HomePage';
-import ExplorePage from './pages/ExplorePage';
 import MarketPage from './pages/MarketPage';
-import CreateMarketPage from './pages/CreateMarketPage';
-import ProfilePage from './pages/ProfilePage';
-import NotFoundPage from './pages/NotFoundPage';
+import AccountPage from './pages/AccountPage';
+import HelpPage from './pages/HelpPage';
+import LeaderboardPage from './pages/LeaderboardPage';
 
-// Components
-import Header from './components/common/Header';
-import Footer from './components/common/Footer';
-
-function App() {
+const App = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <Router>
-        <Header />
-        <main>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/explore" element={<ExplorePage />} />
-            <Route path="/market/:id" element={<MarketPage />} />
-            <Route path="/create" element={<CreateMarketPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </main>
-        <Footer />
-      </Router>
-    </ThemeProvider>
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+      <AuthProvider>
+        <ThemeProvider theme={theme}>
+          <Router>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/market/:id" element={<MarketPage />} />
+              <Route path="/account" element={<AccountPage />} />
+              <Route path="/help" element={<HelpPage />} />
+              <Route path="/leaderboard" element={<LeaderboardPage />} />
+              <Route path="/how-it-works" element={<HelpPage />} />
+            </Routes>
+          </Router>
+        </ThemeProvider>
+      </AuthProvider>
+    </GoogleOAuthProvider>
   );
-}
+};
 
 export default App;
