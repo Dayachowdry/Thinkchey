@@ -286,13 +286,6 @@ const MarketPage = () => {
     }, 500);
   }, [id]);
   
-  const calculateTotal = () => {
-    if (!amount) return 0;
-    
-    const price = selectedOutcome === 'yes' ? market.yesPrice : market.noPrice;
-    return (parseFloat(amount) * price).toFixed(2);
-  };
-  
   const calculateShares = () => {
     if (!amount) return 0;
     

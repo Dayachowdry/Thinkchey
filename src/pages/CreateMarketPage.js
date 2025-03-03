@@ -350,7 +350,7 @@ const CreateMarketPage = () => {
   };
   
   const handleCancel = () => {
-    if (confirm('Are you sure you want to cancel? All form data will be lost.')) {
+    if (window.confirm('Are you sure you want to cancel? All form data will be lost.')) {
       navigate('/explore');
     }
   };
