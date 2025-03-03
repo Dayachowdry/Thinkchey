@@ -19,7 +19,7 @@ const PageDescription = styled.p`
 `;
 
 const FormCard = styled.div`
-  background: ${({ theme }) => theme.colors.background};
+  background: ${({ theme }) => theme.colors.cardBackground};
   border-radius: ${({ theme }) => theme.borderRadius.medium};
   box-shadow: ${({ theme }) => theme.shadows.small};
   padding: 1.5rem;
@@ -57,6 +57,8 @@ const FormInput = styled.input`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.small};
   font-size: 1rem;
+  background: ${({ theme }) => theme.colors.cardBackground};
+  color: ${({ theme }) => theme.colors.textPrimary};
 
   &:focus {
     outline: none;
@@ -73,6 +75,8 @@ const FormTextarea = styled.textarea`
   font-size: 1rem;
   min-height: 120px;
   resize: vertical;
+  background: ${({ theme }) => theme.colors.cardBackground};
+  color: ${({ theme }) => theme.colors.textPrimary};
 
   &:focus {
     outline: none;
@@ -87,7 +91,8 @@ const FormSelect = styled.select`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.small};
   font-size: 1rem;
-  background-color: white;
+  background: ${({ theme }) => theme.colors.cardBackground};
+  color: ${({ theme }) => theme.colors.textPrimary};
 
   &:focus {
     outline: none;
@@ -356,7 +361,7 @@ const CreateMarketPage = () => {
     <PageContainer>
       <PageTitle>Create a New Market</PageTitle>
       <PageDescription>
-        Create a prediction market for others to trade on. You'll need to provide liquidity to
+        Create a prediction market for others to trade on. You&apos;ll need to provide liquidity to
         bootstrap the market.
       </PageDescription>
 
@@ -413,9 +418,7 @@ const CreateMarketPage = () => {
               {errors.category && <FormError>{errors.category}</FormError>}
             </FormGroup>
           </FormSection>
-        </FormCard>
 
-        <FormCard>
           <FormSection>
             <SectionTitle>Resolution Details</SectionTitle>
 
@@ -433,15 +436,11 @@ const CreateMarketPage = () => {
                   </option>
                 ))}
               </FormSelect>
-              <FormHelp>
-                Yes/No markets have two possible outcomes. Multiple Choice markets can have two or
-                more outcomes.
-              </FormHelp>
             </FormGroup>
 
             {formData.resolutionType === 'Multiple Choice' && (
               <FormGroup>
-                <FormLabel>Possible Outcomes *</FormLabel>
+                <FormLabel>Options *</FormLabel>
                 <OptionsList>
                   {formData.options.map((option, index) => (
                     <OptionItem key={index}>
@@ -458,10 +457,10 @@ const CreateMarketPage = () => {
                     </OptionItem>
                   ))}
                 </OptionsList>
-                {errors.options && <FormError>{errors.options}</FormError>}
                 <AddOptionButton type="button" onClick={addOption}>
-                  + Add Another Option
+                  + Add Option
                 </AddOptionButton>
+                {errors.options && <FormError>{errors.options}</FormError>}
               </FormGroup>
             )}
 
@@ -473,10 +472,8 @@ const CreateMarketPage = () => {
                 type="date"
                 value={formData.endDate}
                 onChange={handleChange}
-                min={new Date().toISOString().split('T')[0]} // Set min date to today
               />
               {errors.endDate && <FormError>{errors.endDate}</FormError>}
-              <FormHelp>The market will close for trading on this date.</FormHelp>
             </FormGroup>
 
             <FormGroup>
@@ -490,16 +487,14 @@ const CreateMarketPage = () => {
               />
               {errors.resolutionDetails && <FormError>{errors.resolutionDetails}</FormError>}
               <FormHelp>
-                Specify the exact conditions under which this market will resolve, including sources
-                of truth.
+                Explain how and when the market will be resolved. Include any specific criteria or
+                sources that will be used.
               </FormHelp>
             </FormGroup>
           </FormSection>
-        </FormCard>
 
-        <FormCard>
           <FormSection>
-            <SectionTitle>Market Liquidity</SectionTitle>
+            <SectionTitle>Market Parameters</SectionTitle>
 
             <FormGroup>
               <FormLabel htmlFor="initialLiquidity">Initial Liquidity (USD) *</FormLabel>
@@ -513,8 +508,8 @@ const CreateMarketPage = () => {
               />
               {errors.initialLiquidity && <FormError>{errors.initialLiquidity}</FormError>}
               <FormHelp>
-                The amount of funds you'll provide as initial liquidity. Higher liquidity generally
-                results in better trading conditions.
+                The amount of liquidity you&apos;ll provide to bootstrap the market. Higher
+                liquidity means less price impact for traders.
               </FormHelp>
             </FormGroup>
           </FormSection>
